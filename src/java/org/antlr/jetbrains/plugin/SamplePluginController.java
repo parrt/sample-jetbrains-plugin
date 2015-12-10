@@ -1,4 +1,4 @@
-package org.antlr.jetbrains.st4plugin;
+package org.antlr.jetbrains.plugin;
 
 import com.intellij.ide.plugins.IdeaPluginDescriptor;
 import com.intellij.ide.plugins.PluginManager;
@@ -9,14 +9,14 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.SystemInfo;
 import org.jetbrains.annotations.NotNull;
 
-public class STGroupPluginController implements ProjectComponent {
+public class SamplePluginController implements ProjectComponent {
 	public static final String PLUGIN_ID = "org.antlr.jetbrains.st4plugin";
 	public static final Logger LOG = Logger.getInstance("STGroupPluginController");
 
 	public Project project;
 	public boolean projectIsClosed = false;
 
-	public STGroupPluginController(Project project) {
+	public SamplePluginController(Project project) {
 		this.project = project;
 	}
 

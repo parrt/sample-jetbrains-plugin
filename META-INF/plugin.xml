@@ -1,18 +1,14 @@
 <idea-plugin version="2">
-  <id>org.antlr.jetbrains.st4plugin</id>
-  <name>StringTemplate v4 plugin</name>
+  <id>org.antlr.jetbrains.sample</id>
+  <name>Sample Jetbrains Plugin</name>
   <version>0.1</version>
-  <vendor email="parrt@antlr.org" url="https://github.com/antlr/jetbrains-plugin-st4">ANTLR Project</vendor>
+  <vendor email="parrt@antlr.org" url="https://github.com/parrt/sample-jetbrains-plugin">ANTLR Project Sample Jetbrains Plugin</vendor>
 
   <description><![CDATA[
-  <p>
-      This plugin is for StringTemplate v4 It works with Intellij 13.x-15.
-      It should work in other Jetbrains IDEs.
-                I have tested in PyCharm 4.5 and CLion 1.2.
-     </p>
+  <p>Sample plugin</p>
 
 <p>
-<a href="https://github.com/antlr/jetbrains-plugin-st4">Github source</a>
+<a href="https://github.com/parrt/sample-jetbrains-plugin">Github source</a>
   ]]></description>
 
   <change-notes><![CDATA[
@@ -32,7 +28,7 @@
 
   <project-components>
 	  <component>
-       <implementation-class>org.antlr.jetbrains.st4plugin.STGroupPluginController</implementation-class>
+       <implementation-class>org.antlr.jetbrains.plugin.SamplePluginController</implementation-class>
    </component>
   </project-components>
 
@@ -40,8 +36,8 @@
   </actions>
 
   <extensions defaultExtensionNs="com.intellij">
-      <fileTypeFactory implementation="org.antlr.jetbrains.st4plugin.STGroupFileTypeFactory"/>
+      <fileTypeFactory implementation="org.antlr.jetbrains.plugin.SampleFileTypeFactory"/>
 	  <lang.syntaxHighlighterFactory key="STGroup"
-									 implementationClass="org.antlr.jetbrains.st4plugin.STGroupSyntaxHighlighterFactory"/>
+									 implementationClass="org.antlr.jetbrains.plugin.SampleSyntaxHighlighterFactory"/>
   </extensions>
 </idea-plugin>

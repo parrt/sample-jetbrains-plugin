@@ -1,4 +1,4 @@
-package org.antlr.jetbrains.st4plugin;
+package org.antlr.jetbrains.plugin;
 
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
@@ -6,7 +6,6 @@ import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
 import com.intellij.psi.tree.IElementType;
 import org.antlr.jetbrains.adaptor.lexer.SimpleAntlrLexerAdapter;
-import org.antlr.jetbrains.st4plugin.parsing.STGLexer;
 import org.jetbrains.annotations.NotNull;
 
 /** A highlighter is really just a mapping from token type to
@@ -29,13 +28,13 @@ import org.jetbrains.annotations.NotNull;
  * For highlighting lexer errors, the standard TextAttributesKey
  * for bad characters HighlighterColors.BAD_CHARACTER can be used."
  */
-public class STGroupSyntaxHighlighter extends SyntaxHighlighterBase {
+public class SampleSyntaxHighlighter extends SyntaxHighlighterBase {
 	@NotNull
 	@Override
 	public Lexer getHighlightingLexer() {
 		System.out.println("new lexer");
-		STGLexer lexer = new STGLexer(null);
-		return new SimpleAntlrLexerAdapter(STGroupLanguage.INSTANCE, lexer);
+		SampleLexer lexer = new SampleLexer(null);
+		return new SimpleAntlrLexerAdapter(SampleLanguage.INSTANCE, lexer);
 	}
 
 	@NotNull

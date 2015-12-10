@@ -1,4 +1,4 @@
-package org.antlr.jetbrains.st4plugin;
+package org.antlr.jetbrains.plugin;
 
 import com.intellij.openapi.util.IconLoader;
 

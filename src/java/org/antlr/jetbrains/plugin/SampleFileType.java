@@ -1,4 +1,4 @@
-package org.antlr.jetbrains.st4plugin;
+package org.antlr.jetbrains.plugin;
 
 import com.intellij.openapi.fileTypes.LanguageFileType;
 import org.jetbrains.annotations.NotNull;
@@ -6,11 +6,11 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
-public class STGroupFileType extends LanguageFileType {
-	public static final STGroupFileType INSTANCE = new STGroupFileType();
+public class SampleFileType extends LanguageFileType {
+	public static final SampleFileType INSTANCE = new SampleFileType();
 
-	protected STGroupFileType() {
-		super(STGroupLanguage.INSTANCE);
+	protected SampleFileType() {
+		super(SampleLanguage.INSTANCE);
 	}
 
 	@NotNull
