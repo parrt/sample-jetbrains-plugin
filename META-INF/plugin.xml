@@ -37,7 +37,7 @@
 
   <extensions defaultExtensionNs="com.intellij">
       <fileTypeFactory implementation="org.antlr.jetbrains.plugin.SampleFileTypeFactory"/>
-	  <lang.syntaxHighlighterFactory key="STGroup"
+	  <lang.syntaxHighlighterFactory key="SampleSyntaxHighlighter"
 									 implementationClass="org.antlr.jetbrains.plugin.SampleSyntaxHighlighterFactory"/>
   </extensions>
 </idea-plugin>

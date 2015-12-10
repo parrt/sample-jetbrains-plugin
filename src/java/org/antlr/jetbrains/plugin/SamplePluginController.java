@@ -10,8 +10,8 @@ import com.intellij.openapi.util.SystemInfo;
 import org.jetbrains.annotations.NotNull;
 
 public class SamplePluginController implements ProjectComponent {
-	public static final String PLUGIN_ID = "org.antlr.jetbrains.st4plugin";
-	public static final Logger LOG = Logger.getInstance("STGroupPluginController");
+	public static final String PLUGIN_ID = "org.antlr.jetbrains.sample";
+	public static final Logger LOG = Logger.getInstance("SamplePluginController");
 
 	public Project project;
 	public boolean projectIsClosed = false;
@@ -35,7 +35,7 @@ public class SamplePluginController implements ProjectComponent {
 		if ( plugin!=null ) {
 			version = plugin.getVersion();
 		}
-		LOG.info("StringTemplate 4 Plugin version "+version+", Java version "+ SystemInfo.JAVA_VERSION);
+		LOG.info("Sample Plugin version "+version+", Java version "+ SystemInfo.JAVA_VERSION);
 	}
 
 	@Override
@@ -47,6 +47,6 @@ public class SamplePluginController implements ProjectComponent {
 	@NotNull
 	@Override
 	public String getComponentName() {
-		return "st.ProjectComponent";
+		return "sample.ProjectComponent";
 	}
 }

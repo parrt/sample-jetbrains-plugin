@@ -6,6 +6,6 @@ public class SampleLanguage extends Language {
     public static final SampleLanguage INSTANCE = new SampleLanguage();
 
     private SampleLanguage() {
-        super("STGroup");
+        super("Sample");
     }
 }
