@@ -5,9 +5,13 @@ import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
 import com.intellij.psi.tree.IElementType;
-import org.antlr.jetbrains.adaptor.lexer.SimpleAntlrLexerAdapter;
+import org.antlr.jetbrains.adaptor.lexer.PSIElementTypeFactory;
+import org.antlr.jetbrains.adaptor.lexer.SimpleANTLRLexerAdapter;
+import org.antlr.jetbrains.adaptor.lexer.TokenElementType;
 import org.antlr.jetbrains.sample.parser.SampleLanguageLexer;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 /** A highlighter is really just a mapping from token type to
  *  some text attributes using {@link #getTokenHighlights(IElementType)}.
@@ -30,18 +34,33 @@ import org.jetbrains.annotations.NotNull;
  * for bad characters HighlighterColors.BAD_CHARACTER can be used."
  */
 public class SampleSyntaxHighlighter extends SyntaxHighlighterBase {
+	private static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];
+
 	@NotNull
 	@Override
 	public Lexer getHighlightingLexer() {
 		System.out.println("new lexer");
 		SampleLanguageLexer lexer = new SampleLanguageLexer(null);
-		return new SimpleAntlrLexerAdapter(SampleLanguage.INSTANCE, lexer);
+		return new SimpleANTLRLexerAdapter(SampleLanguage.INSTANCE, lexer);
 	}
 
 	@NotNull
 	@Override
 	public TextAttributesKey[] getTokenHighlights(IElementType tokenType) {
 		System.out.println(tokenType);
-		return new TextAttributesKey[]{DefaultLanguageHighlighterColors.LABEL};
+		TokenElementType eof = PSIElementTypeFactory.getEofElementType(SampleLanguage.INSTANCE);
+		if ( tokenType==eof ) {
+			return EMPTY_KEYS;
+		}
+		List<TokenElementType> types = PSIElementTypeFactory.getTokenIElementTypes(SampleLanguage.INSTANCE);
+		TokenElementType ID = types.get(SampleLanguageLexer.ID);
+		if ( tokenType==ID ) {
+			return new TextAttributesKey[]{DefaultLanguageHighlighterColors.IDENTIFIER};
+		}
+		TokenElementType kvar = types.get(SampleLanguageLexer.VAR);
+		if ( tokenType==kvar ) {
+			return new TextAttributesKey[]{DefaultLanguageHighlighterColors.KEYWORD};
+		}
+		return EMPTY_KEYS;
 	}
 }

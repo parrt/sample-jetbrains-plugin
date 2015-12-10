@@ -7,11 +7,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /** Represents a token in the language of the plug-in. The "token type" of
- *  leaf nodes in PSI tree.
+ *  leaf nodes in jetbrains PSI tree. Corresponds to ANTLR's int token type.
+ *  Intellij lexer token types are instances of IElementType:
  *
- *  Intellij Lexer token types are instances of IElementType.
+ *  "Interface for token types returned from lexical analysis and for types
+ *   of nodes in the AST tree."
+ *
  *  We differentiate between parse tree subtree roots and tokens with
- *  {@link RuleElementType} and {@link TokenElementType}.
+ *  {@link RuleElementType} and {@link TokenElementType}, respectively.
  */
 public class TokenElementType extends IElementType {
 	private final int type;

@@ -6,9 +6,9 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-/** Represents a specific ANTLR rule in the language of the plug-in and is the
+/** Represents a specific ANTLR rule invocation in the language of the plug-in and is the
  *  intellij "token type" of an interior PSI tree node. The IntelliJ equivalent
- *  of ANTLR RuleNode.getRuleIndex() method.
+ *  of ANTLR RuleNode.getRuleIndex() method or maybe RuleNode itself.
  *
  *  Intellij Lexer token types are instances of IElementType.
  *  We differentiate between parse tree subtree roots and tokens with

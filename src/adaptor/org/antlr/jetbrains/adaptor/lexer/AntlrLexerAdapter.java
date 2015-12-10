@@ -19,7 +19,7 @@ import java.util.Map;
  * com.intellij.lexer.Lexer} backed by an ANTLR 4 lexer.
  *
  * <p>For lexers which do not store custom state information, the
- * default implementation {@link SimpleAntlrLexerAdapter} can be
+ * default implementation {@link SimpleANTLRLexerAdapter} can be
  * used.</p>
  *
  * Intellij lexers need to track state as they must be able to
@@ -38,12 +38,12 @@ import java.util.Map;
  *
  * @author Sam Harwell
  */
-public abstract class AntlrLexerAdapter<State extends AntlrLexerState>
+public abstract class ANTLRLexerAdapter<State extends ANTLRLexerState>
 	extends com.intellij.lexer.LexerBase
 {
 	/**
 	 * Gets the {@link Language} supported by this lexer. This
-	 * value is passed to {@link ElementTypeFactory} to ensure the
+	 * value is passed to {@link PSIElementTypeFactory} to ensure the
 	 * correct collection of {@link IElementType} is used for
 	 * assigning element types to tokens in {@link #getTokenType}.
 	 */
@@ -51,7 +51,7 @@ public abstract class AntlrLexerAdapter<State extends AntlrLexerState>
 
 	/**
 	 * This field caches the collection of element types returned
-	 * by {@link ElementTypeFactory#getTokenElementTypes} for
+	 * by {@link PSIElementTypeFactory#getTokenIElementTypes} for
 	 * optimum efficiency of the {@link #getTokenType} method.
 	 */
 	private final List<? extends IElementType> tokenElementTypes;
@@ -121,16 +121,16 @@ public abstract class AntlrLexerAdapter<State extends AntlrLexerState>
 	private Token currentToken;
 
 	/**
-	 * Constructs a new instance of {@link AntlrLexerAdapter} with
+	 * Constructs a new instance of {@link ANTLRLexerAdapter} with
 	 * the specified {@link Language} and underlying ANTLR {@link
 	 * Lexer}.
 	 *
 	 * @param language The language.
 	 * @param lexer The underlying ANTLR lexer.
 	 */
-	public AntlrLexerAdapter(Language language, Lexer lexer) {
+	public ANTLRLexerAdapter(Language language, Lexer lexer) {
 		this.language = language;
-		this.tokenElementTypes = ElementTypeFactory.getTokenElementTypes(language, Arrays.asList(lexer.getTokenNames()));
+		this.tokenElementTypes = PSIElementTypeFactory.getTokenIElementTypes(language, Arrays.asList(lexer.getTokenNames()));
 		this.lexer = lexer;
 	}
 
@@ -176,13 +176,17 @@ public abstract class AntlrLexerAdapter<State extends AntlrLexerState>
 	@Nullable
 	@Override
 	public IElementType getTokenType() {
-		int type = currentToken.getType();
-		if (type == Token.EOF) {
+		return getTokenType( currentToken.getType() );
+	}
+
+	@Nullable
+	public IElementType getTokenType(int antlrTokenType) {
+		if ( antlrTokenType==Token.EOF ) {
 			// return null when lexing is finished
 			return null;
 		}
 
-		return tokenElementTypes.get(type);
+		return tokenElementTypes.get(antlrTokenType);
 	}
 
 	@Override
@@ -231,7 +235,7 @@ public abstract class AntlrLexerAdapter<State extends AntlrLexerState>
 	 * <p>The current lexer may be obtained by calling {@link
 	 * #getLexer}. The default implementation calls {@link
 	 * Lexer#setInputStream} to set the input stream, followed by
-	 * {@link AntlrLexerState#apply} to initialize the state of
+	 * {@link ANTLRLexerState#apply} to initialize the state of
 	 * the lexer.</p>
 	 *
 	 * @param input The new input stream for the lexer.
