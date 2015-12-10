@@ -6,6 +6,7 @@ import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
 import com.intellij.psi.tree.IElementType;
 import org.antlr.jetbrains.adaptor.lexer.SimpleAntlrLexerAdapter;
+import org.antlr.jetbrains.sample.parser.SampleLanguageLexer;
 import org.jetbrains.annotations.NotNull;
 
 /** A highlighter is really just a mapping from token type to
@@ -33,7 +34,7 @@ public class SampleSyntaxHighlighter extends SyntaxHighlighterBase {
 	@Override
 	public Lexer getHighlightingLexer() {
 		System.out.println("new lexer");
-		SampleLexer lexer = new SampleLexer(null);
+		SampleLanguageLexer lexer = new SampleLanguageLexer(null);
 		return new SimpleAntlrLexerAdapter(SampleLanguage.INSTANCE, lexer);
 	}
 
