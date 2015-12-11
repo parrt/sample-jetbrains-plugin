@@ -5,9 +5,9 @@ import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
 import com.intellij.psi.tree.IElementType;
+import org.antlr.jetbrains.adaptor.lexer.ANTLRLexerAdapter;
 import org.antlr.jetbrains.adaptor.lexer.PSIElementTypeFactory;
-import org.antlr.jetbrains.adaptor.lexer.SimpleANTLRLexerAdapter;
-import org.antlr.jetbrains.adaptor.lexer.TokenElementType;
+import org.antlr.jetbrains.adaptor.lexer.TokenIElementType;
 import org.antlr.jetbrains.sample.parser.SampleLanguageLexer;
 import org.jetbrains.annotations.NotNull;
 
@@ -41,23 +41,23 @@ public class SampleSyntaxHighlighter extends SyntaxHighlighterBase {
 	public Lexer getHighlightingLexer() {
 		System.out.println("new lexer");
 		SampleLanguageLexer lexer = new SampleLanguageLexer(null);
-		return new SimpleANTLRLexerAdapter(SampleLanguage.INSTANCE, lexer);
+		return new ANTLRLexerAdapter(SampleLanguage.INSTANCE, lexer);
 	}
 
 	@NotNull
 	@Override
 	public TextAttributesKey[] getTokenHighlights(IElementType tokenType) {
 		System.out.println(tokenType);
-		TokenElementType eof = PSIElementTypeFactory.getEofElementType(SampleLanguage.INSTANCE);
+		TokenIElementType eof = PSIElementTypeFactory.getEofElementType(SampleLanguage.INSTANCE);
 		if ( tokenType==eof ) {
 			return EMPTY_KEYS;
 		}
-		List<TokenElementType> types = PSIElementTypeFactory.getTokenIElementTypes(SampleLanguage.INSTANCE);
-		TokenElementType ID = types.get(SampleLanguageLexer.ID);
+		List<TokenIElementType> types = PSIElementTypeFactory.getTokenIElementTypes(SampleLanguage.INSTANCE);
+		TokenIElementType ID = types.get(SampleLanguageLexer.ID);
 		if ( tokenType==ID ) {
 			return new TextAttributesKey[]{DefaultLanguageHighlighterColors.IDENTIFIER};
 		}
-		TokenElementType kvar = types.get(SampleLanguageLexer.VAR);
+		TokenIElementType kvar = types.get(SampleLanguageLexer.VAR);
 		if ( tokenType==kvar ) {
 			return new TextAttributesKey[]{DefaultLanguageHighlighterColors.KEYWORD};
 		}

@@ -12,14 +12,14 @@ import org.jetbrains.annotations.Nullable;
  *
  *  Intellij Lexer token types are instances of IElementType.
  *  We differentiate between parse tree subtree roots and tokens with
- *  {@link RuleElementType} and {@link TokenElementType}.
+ *  {@link RuleIElementType} and {@link TokenIElementType}.
  */
-public class RuleElementType extends IElementType {
+public class RuleIElementType extends IElementType {
 	private final int ruleIndex;
 
-	public RuleElementType(int ruleIndex,
-	                       @NotNull @NonNls String debugName,
-	                       @Nullable Language language)
+	public RuleIElementType(int ruleIndex,
+	                        @NotNull @NonNls String debugName,
+	                        @Nullable Language language)
 	{
 		super(debugName, language);
 		this.ruleIndex = ruleIndex;

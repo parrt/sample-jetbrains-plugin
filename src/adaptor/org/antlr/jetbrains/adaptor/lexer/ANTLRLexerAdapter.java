@@ -15,12 +15,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This is the base class for implementations of {@link
- * com.intellij.lexer.Lexer} backed by an ANTLR 4 lexer.
- *
- * <p>For lexers which do not store custom state information, the
- * default implementation {@link SimpleANTLRLexerAdapter} can be
- * used.</p>
+ * This is the adaptor class for implementations of {@link
+ * com.intellij.lexer.Lexer} backed by an ANTLR 4 lexer. It supports
+ * any ANTLR 4 lexer that does not store extra information for use in
+ * custom actions. For lexers that do not store custom state information, this
+ * default implementation is sufficient. Otherwise, subclass and override:
+ * {#getInitialState} and {#getLexerState}.
  *
  * Intellij lexers need to track state as they must be able to
  * restart lexing in the middle of the input buffer. From
@@ -36,11 +36,11 @@ import java.util.Map;
  * method, along with the start offset of the fragment to process,
  * when lexing is resumed from the middle of a file."
  *
+ * This implementation supports single- as well as multi-mode lexers.
+ *
  * @author Sam Harwell
  */
-public abstract class ANTLRLexerAdapter<State extends ANTLRLexerState>
-	extends com.intellij.lexer.LexerBase
-{
+public class ANTLRLexerAdapter extends com.intellij.lexer.LexerBase {
 	/**
 	 * Gets the {@link Language} supported by this lexer. This
 	 * value is passed to {@link PSIElementTypeFactory} to ensure the
@@ -66,15 +66,15 @@ public abstract class ANTLRLexerAdapter<State extends ANTLRLexerState>
 	 * index tracked by IntelliJ. This field provides for an
 	 * efficient implementation of {@link #getState}.
 	 */
-	private final Map<State, Integer> stateCacheMap = new HashMap<State, Integer>();
+	private final Map<ANTLRLexerState, Integer> stateCacheMap = new HashMap<ANTLRLexerState, Integer>();
 
 	/**
 	 * Provides a map from a state index tracked by IntelliJ
-	 * &rarr; {@code State} object describing the ANTLR lexer
+	 * &rarr; {@code ANTLRLexerState} object describing the ANTLR lexer
 	 * state. This field provides for an efficient implementation
 	 * of {@link #toLexerState}.
 	 */
-	private final List<State> stateCache = new ArrayList<State>();
+	private final List<ANTLRLexerState> stateCache = new ArrayList<ANTLRLexerState>();
 
 	/**
 	 * Caches the {@code buffer} provided in the call to {@link
@@ -107,7 +107,7 @@ public abstract class ANTLRLexerAdapter<State extends ANTLRLexerState>
 	 * Lexer#nextToken} can be called to obtain {@link
 	 * #currentToken}.</p>
 	 */
-	private State currentState;
+	private ANTLRLexerState currentState;
 
 	/**
 	 * This field tracks the "exposed" lexer token. This is the
@@ -162,7 +162,7 @@ public abstract class ANTLRLexerAdapter<State extends ANTLRLexerState>
 		CharStream in = new CharSequenceCharStream(buffer, endOffset, IntStream.UNKNOWN_SOURCE_NAME);
 		in.seek(startOffset);
 
-		State state;
+		ANTLRLexerState state;
 		if (startOffset == 0 && initialState == 0) {
 			state = getInitialState();
 		} else {
@@ -176,7 +176,7 @@ public abstract class ANTLRLexerAdapter<State extends ANTLRLexerState>
 	@Nullable
 	@Override
 	public IElementType getTokenType() {
-		return getTokenType( currentToken.getType() );
+		return getTokenType(currentToken.getType() );
 	}
 
 	@Nullable
@@ -197,7 +197,7 @@ public abstract class ANTLRLexerAdapter<State extends ANTLRLexerState>
 
 	@Override
 	public int getState() {
-		State state = currentState != null ? currentState : getInitialState();
+		ANTLRLexerState state = currentState != null ? currentState : getInitialState();
 		Integer existing = stateCacheMap.get(state);
 		if (existing == null) {
 			existing = stateCache.size();
@@ -239,37 +239,45 @@ public abstract class ANTLRLexerAdapter<State extends ANTLRLexerState>
 	 * the lexer.</p>
 	 *
 	 * @param input The new input stream for the lexer.
-	 * @param state A {@code State} instance containing the starting state for the lexer.
+	 * @param state A {@code ANTLRLexerState} instance containing the starting state for the lexer.
 	 */
-	protected void applyLexerState(CharStream input, State state) {
+	protected void applyLexerState(CharStream input, ANTLRLexerState state) {
 		lexer.setInputStream(input);
 		state.apply(lexer);
 	}
 
 	/**
-	 * Get the initial {@code State} of the lexer.
+	 * Get the initial {@code ANTLRLexerState} of the lexer.
 	 *
-	 * @return a {@code State} instance representing the state of
+	 * @return a {@code ANTLRLexerState} instance representing the state of
 	 * the lexer at the beginning of an input.
 	 */
-	protected abstract State getInitialState();
+	protected ANTLRLexerState getInitialState() {
+		return new ANTLRLexerState(Lexer.DEFAULT_MODE, null);
+	}
 
 	/**
-	 * Get a {@code State} instance representing the current state
+	 * Get a {@code ANTLRLexerState} instance representing the current state
 	 * of the specified lexer.
 	 *
 	 * @param lexer The lexer.
-	 * @return A {@code State} instance containing the current state of the lexer.
+	 * @return A {@code ANTLRLexerState} instance containing the current state of the lexer.
 	 */
-	protected abstract State getLexerState(Lexer lexer);
+	protected ANTLRLexerState getLexerState(Lexer lexer) {
+		if (lexer._modeStack.isEmpty()) {
+			return new ANTLRLexerState(lexer._mode, null);
+		}
+
+		return new ANTLRLexerState(lexer._mode, lexer._modeStack);
+	}
 
 	/**
-	 * Gets the {@code State} corresponding to the specified IntelliJ {@code state}.
+	 * Gets the {@code ANTLRLexerState} corresponding to the specified IntelliJ {@code state}.
 	 *
 	 * @param state The lexer state provided by IntelliJ.
-	 * @return The {@code State} instance corresponding to the specified state.
+	 * @return The {@code ANTLRLexerState} instance corresponding to the specified state.
 	 */
-	protected State toLexerState(int state) {
+	protected ANTLRLexerState toLexerState(int state) {
 		return stateCache.get(state);
 	}
 }

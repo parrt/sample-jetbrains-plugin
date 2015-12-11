@@ -14,14 +14,14 @@ import org.jetbrains.annotations.Nullable;
  *   of nodes in the AST tree."
  *
  *  We differentiate between parse tree subtree roots and tokens with
- *  {@link RuleElementType} and {@link TokenElementType}, respectively.
+ *  {@link RuleIElementType} and {@link TokenIElementType}, respectively.
  */
-public class TokenElementType extends IElementType {
+public class TokenIElementType extends IElementType {
 	private final int type;
 
-	public TokenElementType(int type,
-	                        @NotNull @NonNls String debugName,
-	                        @Nullable Language language)
+	public TokenIElementType(int type,
+	                         @NotNull @NonNls String debugName,
+	                         @Nullable Language language)
 	{
 		super(debugName, language);
 		this.type = type;
