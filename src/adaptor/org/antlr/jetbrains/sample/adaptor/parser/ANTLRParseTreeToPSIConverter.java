@@ -15,7 +15,6 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Deque;
@@ -43,8 +42,8 @@ public class ANTLRParseTreeToPSIConverter implements ParseTreeListener {
 		this.language = language;
 		this.builder = builder;
 
-		this.tokenElementTypes = PSIElementTypeFactory.getTokenIElementTypes(language, Arrays.asList(parser.getTokenNames()));
-		this.ruleElementTypes = PSIElementTypeFactory.getRuleIElementTypes(language, Arrays.asList(parser.getRuleNames()));
+		this.tokenElementTypes = PSIElementTypeFactory.getTokenIElementTypes(language);
+		this.ruleElementTypes = PSIElementTypeFactory.getRuleIElementTypes(language);
 
 		for (ANTLRErrorListener listener : parser.getErrorListeners()) {
 			if (listener instanceof SyntaxErrorListener) {

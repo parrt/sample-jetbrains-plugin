@@ -9,6 +9,7 @@ import org.antlr.jetbrains.sample.adaptor.lexer.ANTLRLexerAdaptor;
 import org.antlr.jetbrains.sample.adaptor.lexer.PSIElementTypeFactory;
 import org.antlr.jetbrains.sample.adaptor.lexer.TokenIElementType;
 import org.antlr.jetbrains.sample.sample.parser.SampleLanguageLexer;
+import org.antlr.jetbrains.sample.sample.parser.SampleLanguageParser;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -35,6 +36,12 @@ import java.util.List;
  */
 public class SampleSyntaxHighlighter extends SyntaxHighlighterBase {
 	private static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];
+
+	static {
+		PSIElementTypeFactory.defineLanguageIElementTypes(SampleLanguage.INSTANCE,
+		                                                  SampleLanguageParser.tokenNames,
+		                                                  SampleLanguageParser.ruleNames);
+	}
 
 	@NotNull
 	@Override

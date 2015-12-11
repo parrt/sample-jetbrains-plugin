@@ -13,6 +13,7 @@ import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.IFileElementType;
 import com.intellij.psi.tree.TokenSet;
 import org.antlr.jetbrains.sample.adaptor.lexer.ANTLRLexerAdaptor;
+import org.antlr.jetbrains.sample.adaptor.lexer.PSIElementTypeFactory;
 import org.antlr.jetbrains.sample.adaptor.parser.ANTLRParserAdaptor;
 import org.antlr.jetbrains.sample.sample.parser.SampleLanguageLexer;
 import org.antlr.jetbrains.sample.sample.parser.SampleLanguageParser;
@@ -23,6 +24,23 @@ import org.jetbrains.annotations.NotNull;
 public class SampleParserDefinition implements ParserDefinition {
 	public static final IFileElementType FILE =
 		new IFileElementType(SampleLanguage.INSTANCE);
+
+	static {
+		PSIElementTypeFactory.defineLanguageIElementTypes(SampleLanguage.INSTANCE,
+		                                                  SampleLanguageParser.tokenNames,
+		                                                  SampleLanguageParser.ruleNames);
+	}
+
+	public static final TokenSet COMMENTS =
+		PSIElementTypeFactory.createTokenSet(
+			SampleLanguage.INSTANCE,
+			SampleLanguageLexer.COMMENT,
+			SampleLanguageLexer.LINE_COMMENT);
+
+	public static final TokenSet WHITESPACE =
+		PSIElementTypeFactory.createTokenSet(
+			SampleLanguage.INSTANCE,
+			SampleLanguageLexer.WS);
 
 	@NotNull
 	@Override
@@ -45,12 +63,12 @@ public class SampleParserDefinition implements ParserDefinition {
 	/** "Tokens of those types are automatically skipped by PsiBuilder." */
 	@NotNull
 	public TokenSet getWhitespaceTokens() {
-		return TokenSet.EMPTY;
+		return WHITESPACE;
 	}
 
 	@NotNull
 	public TokenSet getCommentTokens() {
-		return TokenSet.EMPTY;
+		return COMMENTS;
 	}
 
 	@NotNull

@@ -29,12 +29,19 @@ public class PSITokenSource implements TokenSource {
 
 	@Override
 	public int getCharPositionInLine() {
-		throw new UnsupportedOperationException("don't have this info in PSITokenSource");
+		return 0;
 	}
 
 	/** Create an ANTLR Token from the current token type of the builder
 	 *  then advance the builder to next token (which ultimately calls an
-	 *  ANTLR lexer).
+	 *  ANTLR lexer).  The {@link ANTLRLexerAdaptor} creates tokens via
+	 *  an ANTLR lexer but converts to {@link TokenIElementType} and here
+	 *  we have to convert back to an ANTLR token using what info we
+	 *  can get from the builder. We lose info such as the original channel.
+	 *  So, whitespace and comments (typically hidden channel) will look like
+	 *  real tokens. Jetbrains uses {@link ParserDefinition#getWhitespaceTokens()}
+	 *  and {@link ParserDefinition#getCommentTokens()} to strip these before
+	 *  our ANTLR parser sees them.
 	 */
 	@Override
 	public Token nextToken() {
@@ -57,9 +64,7 @@ public class PSITokenSource implements TokenSource {
 	}
 
 	@Override
-	public int getLine() {
-		throw new UnsupportedOperationException("don't have this info in PSITokenSource");
-	}
+	public int getLine() { return 0; }
 
 	@Override
 	public CharStream getInputStream() {

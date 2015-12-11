@@ -9,7 +9,6 @@ import org.antlr.v4.runtime.Token;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -130,7 +129,7 @@ public class ANTLRLexerAdaptor extends com.intellij.lexer.LexerBase {
 	 */
 	public ANTLRLexerAdaptor(Language language, Lexer lexer) {
 		this.language = language;
-		this.tokenElementTypes = PSIElementTypeFactory.getTokenIElementTypes(language, Arrays.asList(lexer.getTokenNames()));
+		this.tokenElementTypes = PSIElementTypeFactory.getTokenIElementTypes(language);
 		this.lexer = lexer;
 	}
 

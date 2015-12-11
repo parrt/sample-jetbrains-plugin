@@ -36,11 +36,11 @@
   </actions>
 
   <extensions defaultExtensionNs="com.intellij">
-      <fileTypeFactory implementation="org.antlr.jetbrains.sample.SampleFileTypeFactory"/>
-	  <lang.syntaxHighlighterFactory key="Sample"
-									 implementationClass="org.antlr.jetbrains.sample.SampleSyntaxHighlighterFactory"/>
+    <fileTypeFactory implementation="org.antlr.jetbrains.sample.SampleFileTypeFactory"/>
+    <lang.syntaxHighlighterFactory key="Sample"
+                                   implementationClass="org.antlr.jetbrains.sample.SampleSyntaxHighlighterFactory"/>
 
-    <!--<lang.parserDefinition language="Sample" implementationClass="org.antlr.jetbrains.plugin.SampleParserDefinition"/>-->
+    <lang.parserDefinition language="Sample" implementationClass="org.antlr.jetbrains.sample.SampleParserDefinition"/>
     <lang.ast.factory language="Sample" implementationClass="org.antlr.jetbrains.sample.SampleASTFactory"/>
   </extensions>
 </idea-plugin>

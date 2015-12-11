@@ -29,6 +29,22 @@ public class PSIElementTypeFactory {
 	private PSIElementTypeFactory() {
 	}
 
+	public static void defineLanguageIElementTypes(Language language,
+	                                               String[] tokenNames,
+	                                               String[] ruleNames)
+	{
+		List<TokenIElementType> types = tokenIElementTypesCache.get(language);
+		if ( types==null ) {
+			types = createTokenIElementTypes(language, tokenNames);
+			tokenIElementTypesCache.put(language, types);
+		}
+		List<RuleIElementType> result = ruleIElementTypesCache.get(language);
+		if (result == null) {
+			result = createRuleIElementTypes(language, ruleNames);
+			ruleIElementTypesCache.put(language, result);
+		}
+	}
+
 	public static TokenIElementType getEofElementType(Language language) {
 		TokenIElementType result = eofIElementTypesCache.get(language);
 		if (result == null) {
@@ -43,25 +59,17 @@ public class PSIElementTypeFactory {
 		return tokenIElementTypesCache.get(language);
 	}
 
-	public static List<TokenIElementType> getTokenIElementTypes(Language language,
-	                                                           List<String> tokenNames)
-	{
-		List<TokenIElementType> types = tokenIElementTypesCache.get(language);
-		if (types == null) {
-			types = createTokenIElementTypes(language, tokenNames);
-			tokenIElementTypesCache.put(language, types);
-		}
-
-		return types;
+	public static List<RuleIElementType> getRuleIElementTypes(Language language) {
+		return ruleIElementTypesCache.get(language);
 	}
 
 	@NotNull
-	private static List<TokenIElementType> createTokenIElementTypes(Language language, List<String> tokenNames) {
+	public static List<TokenIElementType> createTokenIElementTypes(Language language, String[] tokenNames) {
 		List<TokenIElementType> result;
-		TokenIElementType[] elementTypes = new TokenIElementType[tokenNames.size()];
-		for (int i = 0; i < tokenNames.size(); i++) {
-			if ( tokenNames.get(i)!=null ) {
-				elementTypes[i] = new TokenIElementType(i, tokenNames.get(i), language);
+		TokenIElementType[] elementTypes = new TokenIElementType[tokenNames.length];
+		for (int i = 0; i < tokenNames.length; i++) {
+			if ( tokenNames[i]!=null ) {
+				elementTypes[i] = new TokenIElementType(i, tokenNames[i], language);
 			}
 		}
 
@@ -69,40 +77,20 @@ public class PSIElementTypeFactory {
 		return result;
 	}
 
-	public static List<RuleIElementType> getRuleIElementTypes(Language language) {
-		return ruleIElementTypesCache.get(language);
-	}
-
-	public static List<RuleIElementType> getRuleIElementTypes(Language language,
-	                                                         List<String> ruleNames)
-	{
-		List<RuleIElementType> result = ruleIElementTypesCache.get(language);
-		if (result == null) {
-			result = createRuleIElementTypes(language, ruleNames);
-			ruleIElementTypesCache.put(language, result);
-		}
-
-		return result;
-	}
-
 	@NotNull
-	private static List<RuleIElementType> createRuleIElementTypes(Language language, List<String> ruleNames) {
+	public static List<RuleIElementType> createRuleIElementTypes(Language language, String[] ruleNames) {
 		List<RuleIElementType> result;
-		RuleIElementType[] elementTypes = new RuleIElementType[ruleNames.size()];
-		for (int i = 0; i < ruleNames.size(); i++) {
-			elementTypes[i] = new RuleIElementType(i, ruleNames.get(i), language);
+		RuleIElementType[] elementTypes = new RuleIElementType[ruleNames.length];
+		for (int i = 0; i < ruleNames.length; i++) {
+			elementTypes[i] = new RuleIElementType(i, ruleNames[i], language);
 		}
 
 		result = Collections.unmodifiableList(Arrays.asList(elementTypes));
 		return result;
 	}
 
-	public static TokenSet createTokenSet(Language language,
-	                                      List<String> tokenNames,
-	                                      int... types)
-	{
-		List<TokenIElementType> tokenIElementTypes =
-			getTokenIElementTypes(language, tokenNames);
+	public static TokenSet createTokenSet(Language language, int... types) {
+		List<TokenIElementType> tokenIElementTypes = getTokenIElementTypes(language);
 
 		IElementType[] elementTypes = new IElementType[types.length];
 		for (int i = 0; i < types.length; i++) {
@@ -111,26 +99,6 @@ public class PSIElementTypeFactory {
 			}
 			else {
 				elementTypes[i] = tokenIElementTypes.get(types[i]);
-			}
-		}
-
-		return TokenSet.create(elementTypes);
-	}
-
-	public static TokenSet createRuleSet(Language language,
-	                                     List<String> ruleNames,
-	                                     int... rules)
-	{
-		List<RuleIElementType> tokenElementTypes =
-			getRuleIElementTypes(language, ruleNames);
-
-		IElementType[] elementTypes = new IElementType[rules.length];
-		for (int i = 0; i < rules.length; i++) {
-			if (rules[i] == Token.EOF) {
-				elementTypes[i] = getEofElementType(language);
-			}
-			else {
-				elementTypes[i] = tokenElementTypes.get(rules[i]);
 			}
 		}
 
