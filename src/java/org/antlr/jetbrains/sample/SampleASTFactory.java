@@ -9,6 +9,10 @@ import com.intellij.psi.impl.source.tree.LeafPsiElement;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.IFileElementType;
 
+/** How to create parse tree nodes (Jetbrains calls them AST nodes). Later
+ *  non-leaf nodes are converted to PSI nodes by the {@link ParserDefinition}.
+ *  Leaf nodes are already considered PSI nodes.
+ */
 public class SampleASTFactory extends ASTFactory {
 	/** Create a FileElement for root or a parse tree CompositeElement (not
 	 *  PSI) for the token. This impl is more or less the default.
@@ -23,7 +27,7 @@ public class SampleASTFactory extends ASTFactory {
         return new CompositeElement(type);
     }
 
-	/** Create PSI leaf node from a token.
+	/** Create a parse tree (AST) leaf node from a token. Doubles as a PSI node.
 	 *  Does not see whitespace tokens.
 	 */
     @Override
