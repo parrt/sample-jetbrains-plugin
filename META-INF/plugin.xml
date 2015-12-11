@@ -28,7 +28,7 @@
 
   <project-components>
 	  <component>
-       <implementation-class>org.antlr.jetbrains.plugin.SamplePluginController</implementation-class>
+       <implementation-class>org.antlr.jetbrains.sample.SamplePluginController</implementation-class>
    </component>
   </project-components>
 
@@ -36,11 +36,11 @@
   </actions>
 
   <extensions defaultExtensionNs="com.intellij">
-      <fileTypeFactory implementation="org.antlr.jetbrains.plugin.SampleFileTypeFactory"/>
+      <fileTypeFactory implementation="org.antlr.jetbrains.sample.SampleFileTypeFactory"/>
 	  <lang.syntaxHighlighterFactory key="Sample"
-									 implementationClass="org.antlr.jetbrains.plugin.SampleSyntaxHighlighterFactory"/>
+									 implementationClass="org.antlr.jetbrains.sample.SampleSyntaxHighlighterFactory"/>
 
     <!--<lang.parserDefinition language="Sample" implementationClass="org.antlr.jetbrains.plugin.SampleParserDefinition"/>-->
-    <lang.ast.factory language="Sample" implementationClass="org.antlr.jetbrains.plugin.SampleASTFactory"/>
+    <lang.ast.factory language="Sample" implementationClass="org.antlr.jetbrains.sample.SampleASTFactory"/>
   </extensions>
 </idea-plugin>

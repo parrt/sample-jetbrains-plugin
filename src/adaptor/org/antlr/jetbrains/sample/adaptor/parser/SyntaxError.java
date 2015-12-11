@@ -1,4 +1,4 @@
-package org.antlr.jetbrains.adaptor.parser;
+package org.antlr.jetbrains.sample.adaptor.parser;
 
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;

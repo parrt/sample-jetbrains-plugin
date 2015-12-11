@@ -1,4 +1,4 @@
-package org.antlr.jetbrains.adaptor.lexer;
+package org.antlr.jetbrains.sample.adaptor.lexer;
 
 import com.intellij.lang.Language;
 import com.intellij.psi.tree.IElementType;
@@ -67,6 +67,10 @@ public class PSIElementTypeFactory {
 
 		result = Collections.unmodifiableList(Arrays.asList(elementTypes));
 		return result;
+	}
+
+	public static List<RuleIElementType> getRuleIElementTypes(Language language) {
+		return ruleIElementTypesCache.get(language);
 	}
 
 	public static List<RuleIElementType> getRuleIElementTypes(Language language,

@@ -1,4 +1,4 @@
-package org.antlr.jetbrains.plugin;
+package org.antlr.jetbrains.sample;
 
 import com.intellij.lang.Language;
 

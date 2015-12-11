@@ -1,10 +1,7 @@
-package org.antlr.jetbrains.plugin;
+package org.antlr.jetbrains.sample;
 
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTFactory;
-import com.intellij.lang.ASTNode;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiElementFactory;
+import com.intellij.lang.ParserDefinition;
 import com.intellij.psi.impl.source.tree.CompositeElement;
 import com.intellij.psi.impl.source.tree.FileElement;
 import com.intellij.psi.impl.source.tree.LeafElement;
@@ -15,6 +12,8 @@ import com.intellij.psi.tree.IFileElementType;
 public class SampleASTFactory extends ASTFactory {
 	/** Create a FileElement for root or a parse tree CompositeElement (not
 	 *  PSI) for the token. This impl is more or less the default.
+	 *  The FileElement is a parse tree node, which is converted to a PsiFile
+	 *  by {@link ParserDefinition#createFile}.
 	 */
     @Override
     public CompositeElement createComposite(IElementType type) {
@@ -31,18 +30,4 @@ public class SampleASTFactory extends ASTFactory {
     public LeafElement createLeaf(IElementType type, CharSequence text) {
 	    return new LeafPsiElement(type, text);
     }
-
-	public static PsiElement createInternalParseTreeNode(ASTNode node) {
-		PsiElement t;
-		IElementType tokenType = node.getElementType();
-		PsiElementFactory factory = ruleElementTypeToPsiFactory.get(tokenType);
-		if (factory != null) {
-			t = factory.createElement(node);
-		}
-		else {
-			t = new ASTWrapperPsiElement(node);
-		}
-
-		return t;
-	}
 }

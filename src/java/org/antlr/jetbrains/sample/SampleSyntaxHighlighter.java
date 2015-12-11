@@ -1,14 +1,14 @@
-package org.antlr.jetbrains.plugin;
+package org.antlr.jetbrains.sample;
 
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
 import com.intellij.psi.tree.IElementType;
-import org.antlr.jetbrains.adaptor.lexer.ANTLRLexerAdaptor;
-import org.antlr.jetbrains.adaptor.lexer.PSIElementTypeFactory;
-import org.antlr.jetbrains.adaptor.lexer.TokenIElementType;
-import org.antlr.jetbrains.sample.parser.SampleLanguageLexer;
+import org.antlr.jetbrains.sample.adaptor.lexer.ANTLRLexerAdaptor;
+import org.antlr.jetbrains.sample.adaptor.lexer.PSIElementTypeFactory;
+import org.antlr.jetbrains.sample.adaptor.lexer.TokenIElementType;
+import org.antlr.jetbrains.sample.sample.parser.SampleLanguageLexer;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
