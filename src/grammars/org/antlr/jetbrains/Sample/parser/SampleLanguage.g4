@@ -116,6 +116,7 @@ fragment ESC :   '\\' ["\bfnrt] ;
 
 WS : [ \t\n\r]+ -> channel(HIDDEN) ;
 
-ERRCHAR
+ERRCHAR // catchall rule
 	:	.	-> channel(HIDDEN)
 	;
+
