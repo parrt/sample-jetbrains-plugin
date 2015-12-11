@@ -5,7 +5,7 @@ import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
 import com.intellij.psi.tree.IElementType;
-import org.antlr.jetbrains.adaptor.lexer.ANTLRLexerAdapter;
+import org.antlr.jetbrains.adaptor.lexer.ANTLRLexerAdaptor;
 import org.antlr.jetbrains.adaptor.lexer.PSIElementTypeFactory;
 import org.antlr.jetbrains.adaptor.lexer.TokenIElementType;
 import org.antlr.jetbrains.sample.parser.SampleLanguageLexer;
@@ -39,9 +39,8 @@ public class SampleSyntaxHighlighter extends SyntaxHighlighterBase {
 	@NotNull
 	@Override
 	public Lexer getHighlightingLexer() {
-		System.out.println("new lexer");
 		SampleLanguageLexer lexer = new SampleLanguageLexer(null);
-		return new ANTLRLexerAdapter(SampleLanguage.INSTANCE, lexer);
+		return new ANTLRLexerAdaptor(SampleLanguage.INSTANCE, lexer);
 	}
 
 	@NotNull
@@ -52,7 +51,8 @@ public class SampleSyntaxHighlighter extends SyntaxHighlighterBase {
 		if ( tokenType==eof ) {
 			return EMPTY_KEYS;
 		}
-		List<TokenIElementType> types = PSIElementTypeFactory.getTokenIElementTypes(SampleLanguage.INSTANCE);
+		List<TokenIElementType> types =
+			PSIElementTypeFactory.getTokenIElementTypes(SampleLanguage.INSTANCE);
 		TokenIElementType ID = types.get(SampleLanguageLexer.ID);
 		if ( tokenType==ID ) {
 			return new TextAttributesKey[]{DefaultLanguageHighlighterColors.IDENTIFIER};

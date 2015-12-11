@@ -39,5 +39,8 @@
       <fileTypeFactory implementation="org.antlr.jetbrains.plugin.SampleFileTypeFactory"/>
 	  <lang.syntaxHighlighterFactory key="Sample"
 									 implementationClass="org.antlr.jetbrains.plugin.SampleSyntaxHighlighterFactory"/>
+
+    <!--<lang.parserDefinition language="Sample" implementationClass="org.antlr.jetbrains.plugin.SampleParserDefinition"/>-->
+    <lang.ast.factory language="Sample" implementationClass="org.antlr.jetbrains.plugin.SampleASTFactory"/>
   </extensions>
 </idea-plugin>
