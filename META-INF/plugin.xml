@@ -42,5 +42,8 @@
 
     <lang.parserDefinition language="Sample" implementationClass="org.antlr.jetbrains.sample.SampleParserDefinition"/>
     <lang.ast.factory language="Sample" implementationClass="org.antlr.jetbrains.sample.SampleASTFactory"/>
+
+    <lang.psiStructureViewFactory language="Sample"
+              implementationClass="org.antlr.jetbrains.sample.structview.SampleStructureViewFactory"/>
   </extensions>
 </idea-plugin>
