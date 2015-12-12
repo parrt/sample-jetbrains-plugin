@@ -53,13 +53,34 @@ public class SampleSyntaxHighlighter extends SyntaxHighlighterBase {
 	public TextAttributesKey[] getTokenHighlights(IElementType tokenType) {
 		TokenIElementType myType = (TokenIElementType)tokenType;
 		int ttype = myType.getANTLRTokenType();
-		TextAttributesKey attrKey = null;
+		TextAttributesKey attrKey;
 		switch ( ttype ) {
 			case SampleLanguageLexer.ID :
 				attrKey = DefaultLanguageHighlighterColors.IDENTIFIER;
 				break;
 			case SampleLanguageLexer.VAR :
+			case SampleLanguageLexer.WHILE :
+			case SampleLanguageLexer.IF :
+			case SampleLanguageLexer.ELSE :
+			case SampleLanguageLexer.RETURN :
+			case SampleLanguageLexer.PRINT :
+			case SampleLanguageLexer.FUNC :
+			case SampleLanguageLexer.TYPEINT :
+			case SampleLanguageLexer.TYPEFLOAT :
+			case SampleLanguageLexer.TYPESTRING :
+			case SampleLanguageLexer.TYPEBOOLEAN :
+			case SampleLanguageLexer.TRUE :
+			case SampleLanguageLexer.FALSE :
 				attrKey = DefaultLanguageHighlighterColors.KEYWORD;
+				break;
+			case SampleLanguageLexer.STRING :
+				attrKey = DefaultLanguageHighlighterColors.STRING;
+				break;
+			case SampleLanguageLexer.COMMENT :
+				attrKey = DefaultLanguageHighlighterColors.LINE_COMMENT;
+				break;
+			case SampleLanguageLexer.LINE_COMMENT :
+				attrKey = DefaultLanguageHighlighterColors.BLOCK_COMMENT;
 				break;
 			default :
 				return EMPTY_KEYS;
