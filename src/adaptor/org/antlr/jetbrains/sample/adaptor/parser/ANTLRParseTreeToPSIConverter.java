@@ -24,8 +24,8 @@ import java.util.List;
  *  We let the ANTLR parser build its kind of ParseTree and then
  *  we convert to a PSI tree in one go using a standard ANTLR ParseTreeListener.
  *
- *  After conversion, this object also has a list of SyntaxError objects
- *  pull from the parser, sorted by lexical location.
+ *  The list of SyntaxError objects pulled from the parser is
+ *  sorted by lexical location so we can create error nodes.
  */
 public class ANTLRParseTreeToPSIConverter implements ParseTreeListener {
 	private final Language language;
