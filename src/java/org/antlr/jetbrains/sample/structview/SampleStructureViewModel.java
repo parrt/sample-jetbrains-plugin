@@ -3,24 +3,31 @@ package org.antlr.jetbrains.sample.structview;
 import com.intellij.ide.structureView.StructureViewModel;
 import com.intellij.ide.structureView.StructureViewModelBase;
 import com.intellij.ide.structureView.StructureViewTreeElement;
-import com.intellij.psi.PsiFile;
+import com.intellij.ide.util.treeView.smartTree.Sorter;
 import org.antlr.jetbrains.sample.SamplePSIFileRoot;
+import org.jetbrains.annotations.NotNull;
 
 public class SampleStructureViewModel
 	extends StructureViewModelBase
 	implements StructureViewModel.ElementInfoProvider
 {
 	public SampleStructureViewModel(SamplePSIFileRoot root) {
-		super(root, new ANTLRv4StructureViewElement(rootElement));
+		super(root, new SampleStructureViewElement(root));
+	}
+
+	@NotNull
+	public Sorter[] getSorters() {
+		return new Sorter[] {Sorter.ALPHA_SORTER};
 	}
 
 	@Override
 	public boolean isAlwaysLeaf(StructureViewTreeElement element) {
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean isAlwaysShowsPlus(StructureViewTreeElement element) {
-		return false;
+		Object value = element.getValue();
+  		return value instanceof SamplePSIFileRoot;
 	}
 }
