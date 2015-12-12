@@ -12,8 +12,6 @@ import org.antlr.jetbrains.sample.sample.parser.SampleLanguageLexer;
 import org.antlr.jetbrains.sample.sample.parser.SampleLanguageParser;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-
 /** A highlighter is really just a mapping from token type to
  *  some text attributes using {@link #getTokenHighlights(IElementType)}.
  *  The reason that it returns an array, TextAttributesKey[], is
@@ -53,21 +51,19 @@ public class SampleSyntaxHighlighter extends SyntaxHighlighterBase {
 	@NotNull
 	@Override
 	public TextAttributesKey[] getTokenHighlights(IElementType tokenType) {
-		System.out.println(tokenType);
-		TokenIElementType eof = PSIElementTypeFactory.getEofElementType(SampleLanguage.INSTANCE);
-		if ( tokenType==eof ) {
-			return EMPTY_KEYS;
+		TokenIElementType myType = (TokenIElementType)tokenType;
+		int ttype = myType.getANTLRTokenType();
+		TextAttributesKey attrKey = null;
+		switch ( ttype ) {
+			case SampleLanguageLexer.ID :
+				attrKey = DefaultLanguageHighlighterColors.IDENTIFIER;
+				break;
+			case SampleLanguageLexer.VAR :
+				attrKey = DefaultLanguageHighlighterColors.KEYWORD;
+				break;
+			default :
+				return EMPTY_KEYS;
 		}
-		List<TokenIElementType> types =
-			PSIElementTypeFactory.getTokenIElementTypes(SampleLanguage.INSTANCE);
-		TokenIElementType ID = types.get(SampleLanguageLexer.ID);
-		if ( tokenType==ID ) {
-			return new TextAttributesKey[]{DefaultLanguageHighlighterColors.IDENTIFIER};
-		}
-		TokenIElementType kvar = types.get(SampleLanguageLexer.VAR);
-		if ( tokenType==kvar ) {
-			return new TextAttributesKey[]{DefaultLanguageHighlighterColors.KEYWORD};
-		}
-		return EMPTY_KEYS;
+		return new TextAttributesKey[] {attrKey};
 	}
 }

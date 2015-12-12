@@ -39,7 +39,7 @@ public abstract class ANTLRParserAdaptor implements PsiParser {
 		TokenStream tokens = new CommonTokenStream(source);
 		parser.setTokenStream(tokens);
 		parser.removeErrorListeners();
-		parser.addErrorListener(new SyntaxErrorListener());
+		parser.addErrorListener(new SyntaxErrorListener()); // trap errors
 		ParseTree parseTree = null;
 		PsiBuilder.Marker rollbackMarker = builder.mark();
 		try {

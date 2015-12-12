@@ -46,7 +46,7 @@ public class PSITokenSource implements TokenSource {
 	@Override
 	public Token nextToken() {
 		TokenIElementType ideaTType = (TokenIElementType)builder.getTokenType();
-		int type = ideaTType!=null ? ideaTType.getType() : Token.EOF;
+		int type = ideaTType!=null ? ideaTType.getANTLRTokenType() : Token.EOF;
 
 		int channel = Token.DEFAULT_CHANNEL;
 		Pair<TokenSource, CharStream> source = new Pair<TokenSource, CharStream>(this, null);

@@ -42,6 +42,11 @@ public class SampleParserDefinition implements ParserDefinition {
 			SampleLanguage.INSTANCE,
 			SampleLanguageLexer.WS);
 
+	public static final TokenSet STRING =
+		PSIElementTypeFactory.createTokenSet(
+			SampleLanguage.INSTANCE,
+			SampleLanguageLexer.STRING);
+
 	@NotNull
 	@Override
 	public Lexer createLexer(Project project) {
@@ -73,7 +78,7 @@ public class SampleParserDefinition implements ParserDefinition {
 
 	@NotNull
 	public TokenSet getStringLiteralElements() {
-		return TokenSet.EMPTY;
+		return STRING;
 	}
 
 	@Override

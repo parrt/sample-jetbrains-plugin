@@ -17,17 +17,17 @@ import org.jetbrains.annotations.Nullable;
  *  {@link RuleIElementType} and {@link TokenIElementType}, respectively.
  */
 public class TokenIElementType extends IElementType {
-	private final int type;
+	private final int antlrTokenType;
 
-	public TokenIElementType(int type,
+	public TokenIElementType(int antlrTokenType,
 	                         @NotNull @NonNls String debugName,
 	                         @Nullable Language language)
 	{
 		super(debugName, language);
-		this.type = type;
+		this.antlrTokenType = antlrTokenType;
 	}
 
-	public int getType() {
-		return type;
+	public int getANTLRTokenType() {
+		return antlrTokenType;
 	}
 }
