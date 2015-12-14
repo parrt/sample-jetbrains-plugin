@@ -221,7 +221,7 @@
       <module fileurl="file://$PROJECT_DIR$/sample-jetbrains-plugin.iml" filepath="$PROJECT_DIR$/sample-jetbrains-plugin.iml" />
     </modules>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" default="false" assert-keyword="true" jdk-15="true" project-jdk-name="IntelliJ IDEA Community Edition IC-141.SNAPSHOT" project-jdk-type="IDEA JDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" default="false" assert-keyword="true" jdk-15="true" project-jdk-name="IntelliJ IDEA Community Edition IC-141.SNAPSHOT" project-jdk-type="IDEA JDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="PyConsoleOptionsProvider">

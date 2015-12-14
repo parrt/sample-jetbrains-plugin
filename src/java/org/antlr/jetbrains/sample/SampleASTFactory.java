@@ -1,37 +1,41 @@
 package org.antlr.jetbrains.sample;
 
-import com.intellij.lang.ASTFactory;
+import com.intellij.core.CoreASTFactory;
 import com.intellij.lang.ParserDefinition;
 import com.intellij.psi.impl.source.tree.CompositeElement;
-import com.intellij.psi.impl.source.tree.FileElement;
 import com.intellij.psi.impl.source.tree.LeafElement;
 import com.intellij.psi.impl.source.tree.LeafPsiElement;
+import com.intellij.psi.impl.source.tree.PsiCoreCommentImpl;
 import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.tree.IFileElementType;
+import org.jetbrains.annotations.NotNull;
 
 /** How to create parse tree nodes (Jetbrains calls them AST nodes). Later
  *  non-leaf nodes are converted to PSI nodes by the {@link ParserDefinition}.
- *  Leaf nodes are already considered PSI nodes.
+ *  Leaf nodes are already considered PSI nodes.  This is just
+ *  {@link CoreASTFactory} but with comments on the methods that you might want
+ *  to override.
  */
-public class SampleASTFactory extends ASTFactory {
-	/** Create a FileElement for root or a parse tree CompositeElement (not
-	 *  PSI) for the token. This impl is more or less the default.
+public class SampleASTFactory extends CoreASTFactory {
+	/** Create an internal parse tree node. FileElement for root or a parse tree CompositeElement (not
+	 *  PSI) for the token.
 	 *  The FileElement is a parse tree node, which is converted to a PsiFile
 	 *  by {@link ParserDefinition#createFile}.
 	 */
+	@NotNull
     @Override
     public CompositeElement createComposite(IElementType type) {
-        if (type instanceof IFileElementType ) {
-            return new FileElement(type, null);
-		}
-        return new CompositeElement(type);
+	    return super.createComposite(type);
     }
 
-	/** Create a parse tree (AST) leaf node from a token. Doubles as a PSI node.
-	 *  Does not see whitespace tokens.
+	/** Create a parse tree (AST) leaf node from a token. Doubles as a PSI leaf node.
+	 *  Does not see whitespace tokens.  Default impl makes {@link LeafPsiElement}
+	 *  or {@link PsiCoreCommentImpl} depending on {@link ParserDefinition#getCommentTokens()}.
 	 */
-    @Override
-    public LeafElement createLeaf(IElementType type, CharSequence text) {
-	    return new LeafPsiElement(type, text);
+	@NotNull
+	@Override
+	public LeafElement createLeaf(@NotNull IElementType type, CharSequence text) {
+		System.out.printf("createLeaf@%d,%d %s %s\n", System.identityHashCode(type), type.getIndex(), type, text);
+		LeafElement leaf = super.createLeaf(type, text);
+		return leaf;
     }
 }

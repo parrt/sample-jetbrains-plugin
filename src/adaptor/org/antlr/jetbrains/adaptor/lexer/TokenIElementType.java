@@ -1,4 +1,4 @@
-package org.antlr.jetbrains.sample.adaptor.lexer;
+package org.antlr.jetbrains.adaptor.lexer;
 
 import com.intellij.lang.Language;
 import com.intellij.psi.tree.IElementType;

@@ -7,6 +7,7 @@ import com.intellij.navigation.ItemPresentation;
 import com.intellij.navigation.NavigationItem;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiNamedElement;
+import org.antlr.jetbrains.sample.SamplePSIFileRoot;
 import org.jetbrains.annotations.NotNull;
 
 public class SampleStructureViewElement implements StructureViewTreeElement, SortableTreeElement {
@@ -55,6 +56,9 @@ public class SampleStructureViewElement implements StructureViewTreeElement, Sor
 	@NotNull
 	@Override
 	public TreeElement[] getChildren() {
+		if ( element instanceof SamplePSIFileRoot ) {
+
+		}
 		return new TreeElement[0];
 	}
 }

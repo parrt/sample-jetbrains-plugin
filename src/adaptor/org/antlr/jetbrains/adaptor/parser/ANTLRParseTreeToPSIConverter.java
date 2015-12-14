@@ -1,10 +1,10 @@
-package org.antlr.jetbrains.sample.adaptor.parser;
+package org.antlr.jetbrains.adaptor.parser;
 
 import com.intellij.lang.Language;
 import com.intellij.lang.PsiBuilder;
-import org.antlr.jetbrains.sample.adaptor.lexer.PSIElementTypeFactory;
-import org.antlr.jetbrains.sample.adaptor.lexer.RuleIElementType;
-import org.antlr.jetbrains.sample.adaptor.lexer.TokenIElementType;
+import org.antlr.jetbrains.adaptor.lexer.PSIElementTypeFactory;
+import org.antlr.jetbrains.adaptor.lexer.RuleIElementType;
+import org.antlr.jetbrains.adaptor.lexer.TokenIElementType;
 import org.antlr.v4.runtime.ANTLRErrorListener;
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.ParserRuleContext;

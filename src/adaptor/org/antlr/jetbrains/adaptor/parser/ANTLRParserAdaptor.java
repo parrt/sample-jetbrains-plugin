@@ -1,11 +1,11 @@
-package org.antlr.jetbrains.sample.adaptor.parser;
+package org.antlr.jetbrains.adaptor.parser;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.Language;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiParser;
 import com.intellij.psi.tree.IElementType;
-import org.antlr.jetbrains.sample.adaptor.lexer.PSITokenSource;
+import org.antlr.jetbrains.adaptor.lexer.PSITokenSource;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.TokenSource;
@@ -49,7 +49,9 @@ public abstract class ANTLRParserAdaptor implements PsiParser {
 			rollbackMarker.rollbackTo();
 		}
 
-		// Now convert ANTLR parser tree to PSI tree
+		// Now convert ANTLR parser tree to PSI tree by mimicking subtree
+		// enter/exit with mark/done calls. I *think* this creates their parse
+		// tree (AST as they call it) when you call {@link PsiBuilder#getTreeBuilt}
 		ANTLRParseTreeToPSIConverter listener = createListener(parser, root, builder);
 		PsiBuilder.Marker rootMarker = builder.mark();
 		ParseTreeWalker.DEFAULT.walk(listener, parseTree);
@@ -57,7 +59,7 @@ public abstract class ANTLRParserAdaptor implements PsiParser {
 			builder.advanceLexer();
 		}
 		rootMarker.done(root);
-		return builder.getTreeBuilt();
+		return builder.getTreeBuilt(); // calls the ASTFactory.createComposite() etc...
 	}
 
 	protected abstract ParseTree parse(Parser parser, IElementType root);

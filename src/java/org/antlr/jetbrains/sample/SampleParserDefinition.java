@@ -12,9 +12,9 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.IFileElementType;
 import com.intellij.psi.tree.TokenSet;
-import org.antlr.jetbrains.sample.adaptor.lexer.ANTLRLexerAdaptor;
-import org.antlr.jetbrains.sample.adaptor.lexer.PSIElementTypeFactory;
-import org.antlr.jetbrains.sample.adaptor.parser.ANTLRParserAdaptor;
+import org.antlr.jetbrains.adaptor.lexer.ANTLRLexerAdaptor;
+import org.antlr.jetbrains.adaptor.lexer.PSIElementTypeFactory;
+import org.antlr.jetbrains.adaptor.parser.ANTLRParserAdaptor;
 import org.antlr.jetbrains.sample.sample.parser.SampleLanguageLexer;
 import org.antlr.jetbrains.sample.sample.parser.SampleLanguageParser;
 import org.antlr.v4.runtime.Parser;
@@ -81,12 +81,19 @@ public class SampleParserDefinition implements ParserDefinition {
 		return STRING;
 	}
 
+	public SpaceRequirements spaceExistanceTypeBetweenTokens(ASTNode left, ASTNode right) {
+		return SpaceRequirements.MAY;
+	}
+
+	/** What is the IFileElementType of the root parse tree node? It
+	 *  is called from {@link #createFile(FileViewProvider)} at least.
+	 */
 	@Override
 	public IFileElementType getFileNodeType() {
 		return FILE;
 	}
 
-	/** The root of your PSI tree is a PsiFile.
+	/** Create the root of your PSI tree (a PsiFile).
 	 *
 	 *  From IntelliJ IDEA Architectural Overview:
 	 *  "A PSI (Program Structure Interface) file is the root of a structure
@@ -102,11 +109,7 @@ public class SampleParserDefinition implements ParserDefinition {
 		return new SamplePSIFileRoot(viewProvider);
 	}
 
-	public SpaceRequirements spaceExistanceTypeBetweenTokens(ASTNode left, ASTNode right) {
-		return SpaceRequirements.MAY;
-	}
-
-	/** Convert from internal parse node (AST they call it) to final PSI node. This
+	/** Convert from *internal* parse node (AST they call it) to final PSI node. This
 	 *  converts only internal rule nodes apparently, not leaf nodes. Leaves
 	 *  are just tokens I guess.
 	 *
