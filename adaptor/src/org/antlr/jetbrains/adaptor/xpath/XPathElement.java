@@ -46,9 +46,8 @@ public abstract class XPathElement {
 	}
 
 	/**
-	 * Given subtree rooted at {@code t} return all children of t if
-	 * t is matched by this path element. I.e., return all nodes that
-	 * could potentially match any next element in the xpath.
+	 * Given subtree rooted at {@code t} return all children of t that
+	 * match this path element.
 	 */
 	public abstract Collection<PsiElement> evaluate(PsiElement t);
 

@@ -45,9 +45,34 @@ public class TestXPath extends ParsingTestCase {
 		String code = loadFile("test/org/antlr/jetbrains/adaptor/test/test.sample");
 		String output =
 			"f\n"+
+			"x\n"+
+			"y\n"+
+			"x\n"+
+			"x\n"+
 			"g\n"+
-			"h";
+			"x\n"+
+			"y\n"+
+			"h\n" +
+			"z";
 		String xpath = "//ID";
+		checkXPathResults(code, xpath, output);
+	}
+
+	public void testAnyVarDef() throws Exception {
+		String code = loadFile("test/org/antlr/jetbrains/adaptor/test/test.sample");
+		String output =
+			"var y = x\n"+
+			"var z = 9";
+		String xpath = "//vardef";
+		checkXPathResults(code, xpath, output);
+	}
+
+	public void testVarDefIDs() throws Exception {
+		String code = loadFile("test/org/antlr/jetbrains/adaptor/test/test.sample");
+		String output =
+			"y\n" +
+			"z";
+		String xpath = "//vardef/ID";
 		checkXPathResults(code, xpath, output);
 	}
 

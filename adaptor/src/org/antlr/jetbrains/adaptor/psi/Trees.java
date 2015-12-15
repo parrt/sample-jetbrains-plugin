@@ -40,11 +40,11 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiFileFactory;
 import com.intellij.psi.impl.PsiFileFactoryImpl;
+import com.intellij.psi.impl.source.tree.LeafPsiElement;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.antlr.jetbrains.adaptor.lexer.RuleIElementType;
-import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.tree.TerminalNode;
+import org.antlr.jetbrains.adaptor.lexer.TokenIElementType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -103,13 +103,21 @@ public class Trees {
 									 List<? super PsiElement> nodes)
 	{
 		// check this node (the root) first
-		if ( findTokens && t instanceof TerminalNode ) {
-			TerminalNode tnode = (TerminalNode)t;
-			if ( tnode.getSymbol().getType()==index ) nodes.add(t);
+		if ( findTokens && t instanceof LeafPsiElement ) {
+			LeafPsiElement tnode = (LeafPsiElement)t;
+			IElementType elType = tnode.getNode().getElementType();
+			if ( elType instanceof TokenIElementType ) {
+				if ( ((TokenIElementType) elType).getANTLRTokenType()==index ) {
+					nodes.add(t);
+				}
+			}
 		}
-		else if ( !findTokens && t instanceof ParserRuleContext ) {
-			ParserRuleContext ctx = (ParserRuleContext)t;
-			if ( ctx.getRuleIndex() == index ) nodes.add(t);
+		else if ( !findTokens && t instanceof ANTLRPsiNodeAdaptor ) {
+			ANTLRPsiNodeAdaptor ctx = (ANTLRPsiNodeAdaptor)t;
+			IElementType elType = ctx.getNode().getElementType();
+			if ( elType instanceof RuleIElementType ) {
+				if ( ((RuleIElementType) elType).getRuleIndex()==index ) nodes.add(t);
+			}
 		}
 		// check children
 		for (PsiElement c : t.getChildren()) {

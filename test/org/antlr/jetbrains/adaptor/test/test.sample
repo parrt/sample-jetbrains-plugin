@@ -6,3 +6,5 @@ func f(x:[]) {
 func g(x:int, y:float) { }
 
 func h() : boolean { return false; }
+
+var z = 9
