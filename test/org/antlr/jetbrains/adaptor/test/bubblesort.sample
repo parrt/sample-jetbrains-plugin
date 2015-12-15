@@ -3,10 +3,9 @@ func bubbleSort(v:[], c:string):[] {
     // foodsfakajlsdf
 	var x = len(v)
 	var i = 1
-	var j = 1
-	while (i<= length) {
-		j = 1
-		while(j<=((length - i))){
+	while (i <= length) {
+		var j = 1
+		while ( j<=(length - i) ) {
 			if (v[j] > v[j+1]){
 				var swap = v[j]
 				var x = 3

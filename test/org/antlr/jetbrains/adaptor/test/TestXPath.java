@@ -2,6 +2,7 @@ package org.antlr.jetbrains.adaptor.test;
 
 import com.intellij.lang.Language;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.impl.source.tree.LeafPsiElement;
 import com.intellij.testFramework.ParsingTestCase;
 import org.antlr.jetbrains.adaptor.xpath.XPath;
 import org.antlr.jetbrains.sample.SampleLanguage;
@@ -9,6 +10,7 @@ import org.antlr.jetbrains.sample.SampleParserDefinition;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.function.Consumer;
 
 public class TestXPath extends ParsingTestCase {
 	public TestXPath() {
@@ -75,6 +77,98 @@ public class TestXPath extends ParsingTestCase {
 		String xpath = "//vardef/ID";
 		checkXPathResults(code, xpath, output);
 	}
+
+	public void testAllVarDefIDsInScopes() throws Exception {
+		String code = loadFile("test/org/antlr/jetbrains/adaptor/test/bubblesort.sample");
+		String output =
+			"x\n"+
+			"i\n"+
+			"j\n"+
+			"swap\n"+
+			"x";
+		String xpath = "//block/statement/vardef/ID";
+		checkXPathResults(code, xpath, output);
+	}
+
+	public void testTopLevelVarDefIDsInScopes() throws Exception {
+		String code = loadFile("test/org/antlr/jetbrains/adaptor/test/bubblesort.sample");
+		String output =
+			"x\n"+
+			"i";
+		String xpath = "//function/block/statement/vardef/ID";
+		checkXPathResults(code, xpath, output);
+	}
+
+	public void testRuleUnderWildcard() throws Exception {
+		String code = loadFile("test/org/antlr/jetbrains/adaptor/test/test.sample");
+		String output =
+			"var y = x\n"+
+			"x\n"+
+			"[\n"+
+			"1\n"+
+			"]\n"+
+			"=\n"+
+			"\"sdflkjsdf\"\n"+
+			"return\n"+
+			"false;";
+		String xpath = "//function/*/statement/*";
+		checkXPathResults(code, xpath, output);
+	}
+
+	public void testAllNonWhileTokens() throws Exception {
+		String code = loadFile("test/org/antlr/jetbrains/adaptor/test/bubblesort.sample");
+		String output =
+			"(\n"+
+			")\n"+
+			"return";
+		String xpath = "/script/function/block/statement/!'while'";
+		checkXPathResults(code, xpath, output);
+	}
+
+	public void testGetNestedIf() throws Exception {
+		String code = loadFile("test/org/antlr/jetbrains/adaptor/test/bubblesort.sample");
+		String output =
+			"if";
+		String xpath = "//'if'";
+		checkXPathResults(code, xpath, output);
+	}
+
+	public void testWildcardUnderFuncThenJustTokens() throws Exception {
+		String code = loadFile("test/org/antlr/jetbrains/adaptor/test/test.sample");
+		String output =
+			"func\n"+
+			"f\n"+
+			"(\n"+
+			")\n"+
+			"func\n"+
+			"g\n"+
+			"(\n"+
+			")\n"+
+			"func\n"+
+			"h\n"+
+			"(\n"+
+			")\n"+
+			":";
+		String xpath = "//function/*";
+		myFile = createPsiFile("a", code);
+		ensureParsed(myFile);
+		assertEquals(code, myFile.getText());
+		final StringBuilder buf = new StringBuilder();
+		Collection<? extends PsiElement> nodes = XPath.findAll(SampleLanguage.INSTANCE, myFile, xpath);
+		nodes.forEach(
+			new Consumer<PsiElement>() {
+				@Override
+				public void accept(PsiElement node) {
+					if ( node instanceof LeafPsiElement ) {
+						buf.append(node.getText());
+						buf.append("\n");
+					}
+				}
+			});
+		assertEquals(output.trim(), buf.toString().trim());
+	}
+
+	// S U P P O R T
 
 	protected void checkXPathResults(String code, String xpath, String allNodesText) throws IOException {
 		checkXPathResults(SampleLanguage.INSTANCE, code, xpath, allNodesText);

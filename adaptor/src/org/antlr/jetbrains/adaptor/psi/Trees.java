@@ -36,13 +36,16 @@ import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.fileTypes.LanguageFileType;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
+import com.intellij.psi.PsiComment;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiFileFactory;
+import com.intellij.psi.PsiWhiteSpace;
 import com.intellij.psi.impl.PsiFileFactoryImpl;
 import com.intellij.psi.impl.source.tree.LeafPsiElement;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.util.PsiTreeUtil;
+import com.intellij.psi.util.PsiUtilCore;
 import org.antlr.jetbrains.adaptor.lexer.RuleIElementType;
 import org.antlr.jetbrains.adaptor.lexer.TokenIElementType;
 import org.jetbrains.annotations.NotNull;
@@ -135,6 +138,25 @@ public class Trees {
 		}
 		return nodes;
 	}
+
+	/** Get all non-WS, non-Comment children of t */
+	@NotNull
+	public static PsiElement[] getChildren(PsiElement t) {
+		PsiElement psiChild = t.getFirstChild();
+		if (psiChild == null) return PsiElement.EMPTY_ARRAY;
+
+		List<PsiElement> result = new ArrayList<>();
+		while (psiChild != null) {
+			if ( !(psiChild instanceof PsiComment) &&
+				 !(psiChild instanceof PsiWhiteSpace) )
+			{
+				result.add(psiChild);
+			}
+			psiChild = psiChild.getNextSibling();
+		}
+		return PsiUtilCore.toPsiElementArray(result);
+	}
+
 
 	/** Find smallest subtree of t enclosing range startCharIndex..stopCharIndex
 	 *  inclusively using postorder traversal.  Recursive depth-first-search.

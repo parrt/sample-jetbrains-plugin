@@ -39,6 +39,7 @@ import com.intellij.psi.impl.source.tree.CompositePsiElement;
 import org.antlr.jetbrains.adaptor.lexer.PSIElementTypeFactory;
 import org.antlr.jetbrains.adaptor.lexer.RuleIElementType;
 import org.antlr.jetbrains.adaptor.lexer.TokenIElementType;
+import org.antlr.jetbrains.adaptor.psi.Trees;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.LexerNoViableAltException;
@@ -204,7 +205,7 @@ loop:
 					new XPathWildcardElement();
 			case XPathLexer.TOKEN_REF :
 			case XPathLexer.STRING :
-				if ( ttype==Token.INVALID_TYPE ) {
+				if ( ttype==null || ttype==Token.INVALID_TYPE ) {
 					throw new IllegalArgumentException(word+
 													   " at index "+
 													   wordToken.getStartIndex()+
@@ -214,7 +215,7 @@ loop:
 					new XPathTokenAnywhereElement(word, ttype) :
 					new XPathTokenElement(word, ttype);
 			default :
-				if ( ruleIndex==-1 ) {
+				if ( ruleIndex==null || ruleIndex==-1 ) {
 					throw new IllegalArgumentException(word+
 													   " at index "+
 													   wordToken.getStartIndex()+
@@ -269,8 +270,8 @@ loop:
 
 		if ( t instanceof PsiFile ) {
 			// the PSI fileroot exists above start rule in ANTLR grammar and hence above ANTLR's parse tree root
-			// drop t down to top of ANTLR's tree
-			t = t.getChildren()[0];
+			// drop t down to top of ANTLR's tree. Should be only child if we ignore WS, Comments
+			t = Trees.getChildren(t)[0];
 		}
 		PsiElement dummyRoot = new DummyRoot(t); // a dummy parent of t so we can initialize the work list
 
