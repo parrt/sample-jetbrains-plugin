@@ -9,7 +9,7 @@ import org.antlr.jetbrains.adaptor.lexer.PSIElementTypeFactory;
 import org.antlr.jetbrains.adaptor.lexer.TokenIElementType;
 import org.antlr.jetbrains.adaptor.psi.Trees;
 import org.antlr.jetbrains.sample.SampleLanguage;
-import org.antlr.jetbrains.sample.sample.parser.SampleLanguageLexer;
+import org.antlr.jetbrains.sample.parser.SampleLanguageLexer;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 

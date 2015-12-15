@@ -35,10 +35,19 @@ public class TestXPath extends ParsingTestCase {
 		String code = loadFile("test/org/antlr/jetbrains/adaptor/test/test.sample");
 		String output =
 			"f\n"+
-			"bubbleSort\n"+
-			"z\n"+
-			"q";
+			"g\n"+
+			"h";
 		String xpath = "/script/function/ID";
+		checkXPathResults(code, xpath, output);
+	}
+
+	public void testAllIDs() throws Exception {
+		String code = loadFile("test/org/antlr/jetbrains/adaptor/test/test.sample");
+		String output =
+			"f\n"+
+			"g\n"+
+			"h";
+		String xpath = "//ID";
 		checkXPathResults(code, xpath, output);
 	}
 

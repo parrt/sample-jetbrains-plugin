@@ -8,8 +8,8 @@ import com.intellij.psi.tree.IElementType;
 import org.antlr.jetbrains.adaptor.lexer.ANTLRLexerAdaptor;
 import org.antlr.jetbrains.adaptor.lexer.PSIElementTypeFactory;
 import org.antlr.jetbrains.adaptor.lexer.TokenIElementType;
-import org.antlr.jetbrains.sample.sample.parser.SampleLanguageLexer;
-import org.antlr.jetbrains.sample.sample.parser.SampleLanguageParser;
+import org.antlr.jetbrains.sample.parser.SampleLanguageLexer;
+import org.antlr.jetbrains.sample.parser.SampleLanguageParser;
 import org.jetbrains.annotations.NotNull;
 
 /** A highlighter is really just a mapping from token type to

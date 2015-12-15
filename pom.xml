@@ -3,7 +3,7 @@ This pom file the only here so that we can easily run ANTLR on the sample gramma
 It won't actually be able to compile the source without properly identifying all
 of the jetbrains libraries, which apparently is nonobvious. Consequently,
 use this to process the sample grammar but use intellij itself to compile
-and build a plug-in.
+and build a plug-in. Oh, it also needs to process the XPathLexer.g4 file.
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
@@ -62,12 +62,21 @@ and build a plug-in.
 				<groupId>org.antlr</groupId>
 				<artifactId>antlr4-maven-plugin</artifactId>
 				<version>4.5.1</version>
-				<configuration>
-					<sourceDirectory>src/grammars</sourceDirectory>
-				</configuration>
 				<executions>
 					<execution>
-						<id>antlr</id>
+						<configuration>
+							<sourceDirectory>src/grammars</sourceDirectory>
+						</configuration>
+						<id>antlr1</id>
+						<goals>
+							<goal>antlr4</goal>
+						</goals>
+					</execution>
+					<execution>
+						<configuration>
+							<sourceDirectory>adaptor/src</sourceDirectory>
+						</configuration>
+						<id>antlr2</id>
 						<goals>
 							<goal>antlr4</goal>
 						</goals>
