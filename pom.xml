@@ -1,3 +1,10 @@
+<!--
+This pom file the only here so that we can easily run ANTLR on the sample grammar.
+It won't actually be able to compile the source without properly identifying all
+of the jetbrains libraries, which apparently is nonobvious. Consequently,
+use this to process the sample grammar but use intellij itself to compile
+and build a plug-in.
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
