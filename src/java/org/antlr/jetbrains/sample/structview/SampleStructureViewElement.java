@@ -7,8 +7,14 @@ import com.intellij.navigation.ItemPresentation;
 import com.intellij.navigation.NavigationItem;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiNamedElement;
-import org.antlr.jetbrains.sample.SamplePSIFileRoot;
+import org.antlr.jetbrains.adaptor.xpath.XPath;
+import org.antlr.jetbrains.sample.SampleLanguage;
+import org.antlr.jetbrains.sample.psi.SamplePSIFileRoot;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class SampleStructureViewElement implements StructureViewTreeElement, SortableTreeElement {
 	protected final PsiElement element;
@@ -44,7 +50,9 @@ public class SampleStructureViewElement implements StructureViewTreeElement, Sor
 	@NotNull
 	@Override
 	public String getAlphaSortKey() {
-		return ((PsiNamedElement) element).getName();
+		String s = element instanceof PsiNamedElement ? ((PsiNamedElement) element).getName() : null;
+		if ( s==null ) return "unknown key";
+		return s;
 	}
 
 	@NotNull
@@ -57,7 +65,12 @@ public class SampleStructureViewElement implements StructureViewTreeElement, Sor
 	@Override
 	public TreeElement[] getChildren() {
 		if ( element instanceof SamplePSIFileRoot ) {
-
+			Collection<? extends PsiElement> funcs = XPath.findAll(SampleLanguage.INSTANCE, element, "/script/function/ID");
+			List<TreeElement> treeElements = new ArrayList<>(funcs.size());
+			for (PsiElement el : funcs) {
+				treeElements.add(new SampleStructureViewElement(el));
+			}
+			return treeElements.toArray(new TreeElement[funcs.size()]);
 		}
 		return new TreeElement[0];
 	}

@@ -4,7 +4,7 @@ import com.intellij.ide.structureView.StructureViewModel;
 import com.intellij.ide.structureView.StructureViewModelBase;
 import com.intellij.ide.structureView.StructureViewTreeElement;
 import com.intellij.ide.util.treeView.smartTree.Sorter;
-import org.antlr.jetbrains.sample.SamplePSIFileRoot;
+import org.antlr.jetbrains.sample.psi.SamplePSIFileRoot;
 import org.jetbrains.annotations.NotNull;
 
 public class SampleStructureViewModel
@@ -22,7 +22,7 @@ public class SampleStructureViewModel
 
 	@Override
 	public boolean isAlwaysLeaf(StructureViewTreeElement element) {
-		return true;
+  		return !isAlwaysShowsPlus(element);
 	}
 
 	@Override

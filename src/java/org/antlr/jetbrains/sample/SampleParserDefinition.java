@@ -15,6 +15,8 @@ import com.intellij.psi.tree.TokenSet;
 import org.antlr.jetbrains.adaptor.lexer.ANTLRLexerAdaptor;
 import org.antlr.jetbrains.adaptor.lexer.PSIElementTypeFactory;
 import org.antlr.jetbrains.adaptor.parser.ANTLRParserAdaptor;
+import org.antlr.jetbrains.adaptor.psi.ANTLRRuleRefPSI;
+import org.antlr.jetbrains.sample.psi.SamplePSIFileRoot;
 import org.antlr.jetbrains.sample.sample.parser.SampleLanguageLexer;
 import org.antlr.jetbrains.sample.sample.parser.SampleLanguageParser;
 import org.antlr.v4.runtime.Parser;
@@ -119,6 +121,6 @@ public class SampleParserDefinition implements ParserDefinition {
 	 */
 	@NotNull
 	public PsiElement createElement(ASTNode node) {
-		return new ASTWrapperPsiElement(node);
+		return new ANTLRRuleRefPSI(node);
 	}
 }

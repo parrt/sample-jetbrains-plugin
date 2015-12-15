@@ -6,7 +6,7 @@ import org.antlr.jetbrains.adaptor.psi.Trees;
 import java.util.Collection;
 
 /**
- * Either {@code ID} at start of path or {@code ...//ID} in middle of path.
+ * Either {@code rulename} at start of path or {@code ...//rulename} in middle of path.
  */
 public class XPathRuleAnywhereElement extends XPathElement {
 	protected int ruleIndex;

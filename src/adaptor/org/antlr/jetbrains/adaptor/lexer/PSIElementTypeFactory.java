@@ -34,18 +34,26 @@ public class PSIElementTypeFactory {
 	                                               String[] ruleNames)
 	{
 		synchronized (PSIElementTypeFactory.class) {
-			List<TokenIElementType> types = tokenIElementTypesCache.get(language);
-			if ( types==null ) {
-				types = createTokenIElementTypes(language, tokenNames);
-				tokenIElementTypesCache.put(language, types);
+			if ( tokenIElementTypesCache.get(language)==null ) {
+				List<TokenIElementType> types = tokenIElementTypesCache.get(language);
+				if ( types==null ) {
+					types = createTokenIElementTypes(language, tokenNames);
+					tokenIElementTypesCache.put(language, types);
+				}
 			}
-			List<RuleIElementType> result = ruleIElementTypesCache.get(language);
-			if ( result==null ) {
-				result = createRuleIElementTypes(language, ruleNames);
-				ruleIElementTypesCache.put(language, result);
+			if ( ruleIElementTypesCache.get(language)==null ) {
+				List<RuleIElementType> result = ruleIElementTypesCache.get(language);
+				if ( result==null ) {
+					result = createRuleIElementTypes(language, ruleNames);
+					ruleIElementTypesCache.put(language, result);
+				}
 			}
-			tokenNamesCache.put(language, createTokenTypeMap(ruleNames));
-			ruleNamesCache.put(language,  createRuleIndexMap(ruleNames));
+			if ( tokenNamesCache.get(language)==null ) {
+				tokenNamesCache.put(language, createTokenTypeMap(tokenNames));
+			}
+			if ( ruleNamesCache.get(language)==null ) {
+				ruleNamesCache.put(language, createRuleIndexMap(ruleNames));
+			}
 		}
 	}
 
@@ -77,12 +85,12 @@ public class PSIElementTypeFactory {
 
 	/** Get a map from token names to token types. */
 	public static Map<String, Integer> createTokenTypeMap(String[] tokenNames) {
-		return Collections.unmodifiableMap(Utils.toMap(tokenNames));
+		return Utils.toMap(tokenNames);
 	}
 
 	/** Get a map from rule names to rule indexes. */
 	public static Map<String, Integer> createRuleIndexMap(String[] ruleNames) {
-		return Collections.unmodifiableMap(Utils.toMap(ruleNames));
+		return Utils.toMap(ruleNames);
 	}
 
 	@NotNull

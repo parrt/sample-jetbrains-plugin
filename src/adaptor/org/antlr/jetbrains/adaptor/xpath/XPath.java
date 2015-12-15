@@ -1,9 +1,11 @@
 package org.antlr.jetbrains.adaptor.xpath;
 
-import com.intellij.extapi.psi.ASTDelegatePsiElement;
-import com.intellij.lang.ASTNode;
 import com.intellij.lang.Language;
+import com.intellij.lang.parser.GeneratedParserUtilBase;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiReference;
+import com.intellij.psi.impl.source.tree.CompositePsiElement;
 import org.antlr.jetbrains.adaptor.lexer.PSIElementTypeFactory;
 import org.antlr.jetbrains.adaptor.lexer.RuleIElementType;
 import org.antlr.jetbrains.adaptor.lexer.TokenIElementType;
@@ -76,11 +78,9 @@ public class XPath {
 	private final Map<String, Integer> 	 tokenTypes;
 
 	protected String path;
-	protected XPathElement[] elements;
 
 	public XPath(Language language, String path) {
 		this.path = path;
-		elements = split(path);
 		this.tokenElementTypes = PSIElementTypeFactory.getTokenIElementTypes(language);
 		this.ruleElementTypes  = PSIElementTypeFactory.getRuleIElementTypes(language);
 		this.ruleIndexes       = PSIElementTypeFactory.getRuleNameToIndexMap(language);
@@ -165,8 +165,8 @@ loop:
 			throw new IllegalArgumentException("Missing path element at end of path");
 		}
 		String word = wordToken.getText();
-		int ttype = tokenTypes.get(word);
-		int ruleIndex = ruleIndexes.get(word);
+		Integer ttype = tokenTypes.get(word);
+		Integer ruleIndex = ruleIndexes.get(word);
 		switch ( wordToken.getType() ) {
 			case XPathLexer.WILDCARD :
 				return anywhere ?
@@ -197,9 +197,36 @@ loop:
 	}
 
 
-	public static Collection<PsiElement> findAll(Language language, PsiElement tree, String xpath) {
+	public static Collection<? extends PsiElement> findAll(Language language, PsiElement tree, String xpath) {
 		XPath p = new XPath(language, xpath);
-		return p.evaluate(tree);
+		XPathElement[] elements = p.split(xpath);
+		return p.evaluate(tree, elements);
+	}
+
+	public static class DummyRoot extends CompositePsiElement {
+		public final PsiElement child;
+		public DummyRoot(PsiElement child) {
+			super(GeneratedParserUtilBase.DUMMY_BLOCK);
+			this.child = child;
+		}
+
+		@NotNull
+		@Override
+		public PsiElement[] getChildren() {
+			return new PsiElement[] {child};
+		}
+
+		@NotNull
+		@Override
+		public PsiReference[] getReferences() {
+			return PsiReference.EMPTY_ARRAY;
+		}
+
+		@NotNull
+		@Override
+		public Language getLanguage() {
+			return getParent().getLanguage();
+		}
 	}
 
 	/**
@@ -207,16 +234,15 @@ loop:
 	 * path. The root {@code /} is relative to the node passed to
 	 * {@link #evaluate}.
 	 */
-	public Collection<PsiElement> evaluate(final PsiElement t) {
-		class DummyPsiNode extends ASTDelegatePsiElement {
-			@NotNull
-			@Override
-			public ASTNode getNode() { return null;	}
-			@Override
-			public PsiElement getParent() { return null; } // don't set t's parent.
+	public Collection<? extends PsiElement> evaluate(PsiElement t, XPathElement[] elements) {
+		if ( t==null ) return Collections.emptyList();
+
+		if ( t instanceof PsiFile ) {
+			// the PSI fileroot exists above start rule in ANTLR grammar and hence above ANTLR's parse tree root
+			// drop t down to top of ANTLR's tree
+			t = t.getChildren()[0];
 		}
-		PsiElement dummyRoot = new DummyPsiNode();
-		dummyRoot.add(t);
+		PsiElement dummyRoot = new DummyRoot(t); // a dummy parent of t so we can initialize the work list
 
 		Collection<PsiElement> work = Collections.singleton(dummyRoot);
 

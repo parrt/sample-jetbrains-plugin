@@ -1,9 +1,12 @@
-package org.antlr.jetbrains.sample;
+package org.antlr.jetbrains.sample.psi;
 
 import com.intellij.extapi.psi.PsiFileBase;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.psi.FileViewProvider;
 import com.intellij.psi.PsiElement;
+import org.antlr.jetbrains.sample.Icons;
+import org.antlr.jetbrains.sample.SampleFileType;
+import org.antlr.jetbrains.sample.SampleLanguage;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
