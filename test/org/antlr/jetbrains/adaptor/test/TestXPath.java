@@ -10,7 +10,6 @@ import org.antlr.jetbrains.sample.SampleParserDefinition;
 
 import java.io.IOException;
 import java.util.Collection;
-import java.util.function.Consumer;
 
 public class TestXPath extends ParsingTestCase {
 	public TestXPath() {
@@ -155,16 +154,12 @@ public class TestXPath extends ParsingTestCase {
 		assertEquals(code, myFile.getText());
 		final StringBuilder buf = new StringBuilder();
 		Collection<? extends PsiElement> nodes = XPath.findAll(SampleLanguage.INSTANCE, myFile, xpath);
-		nodes.forEach(
-			new Consumer<PsiElement>() {
-				@Override
-				public void accept(PsiElement node) {
-					if ( node instanceof LeafPsiElement ) {
-						buf.append(node.getText());
-						buf.append("\n");
-					}
-				}
-			});
+		for (PsiElement n : nodes) {
+			if ( n instanceof LeafPsiElement ) {
+				buf.append(n.getText());
+				buf.append("\n");
+			}
+		}
 		assertEquals(output.trim(), buf.toString().trim());
 	}
 

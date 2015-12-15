@@ -54,9 +54,20 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Predicate;
 
 public class Trees {
+	public interface Predicate<T> {
+
+		/**
+		 * Evaluates this predicate on the given argument.
+		 *
+		 * @param t the input argument
+		 * @return {@code true} if the input argument matches the predicate,
+		 * otherwise {@code false}
+		 */
+		boolean test(T t);
+	}
+
 	private Trees() { }
 
 	/** Return a list of all ancestors of this node.  The first node of
