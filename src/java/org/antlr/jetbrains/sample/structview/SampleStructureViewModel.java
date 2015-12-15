@@ -12,7 +12,7 @@ public class SampleStructureViewModel
 	implements StructureViewModel.ElementInfoProvider
 {
 	public SampleStructureViewModel(SamplePSIFileRoot root) {
-		super(root, new SampleStructureViewElement(root));
+		super(root, new SampleStructureViewRootElement(root));
 	}
 
 	@NotNull
