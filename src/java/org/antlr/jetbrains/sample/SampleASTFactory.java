@@ -34,7 +34,6 @@ public class SampleASTFactory extends CoreASTFactory {
 	@NotNull
 	@Override
 	public LeafElement createLeaf(@NotNull IElementType type, CharSequence text) {
-		System.out.printf("createLeaf@%d,%d %s %s\n", System.identityHashCode(type), type.getIndex(), type, text);
 		LeafElement leaf = super.createLeaf(type, text);
 		return leaf;
     }
