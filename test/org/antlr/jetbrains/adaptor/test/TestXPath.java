@@ -15,9 +15,35 @@ public class TestXPath extends ParsingTestCase {
 		super("", "Sample", new SampleParserDefinition());
 	}
 
-	public void testVarDef() throws Exception {
-		checkXPathResults(SampleLanguage.INSTANCE, "var x = 1", "/script/statement", "var x = 1");
+	public void testSingleVarDef() throws Exception {
+		String code = "var x = 1";
+		String output = code;
+		String xpath = "/script/statement";
+		checkXPathResults(code, xpath, output);
+	}
 
+	public void testMultiVarDef() throws Exception {
+		String code =
+			"var x = 1\n" +
+			"var y = [1,2,3]\n";
+		String output = code;
+		String xpath = "/script/statement";
+		checkXPathResults(code, xpath, output);
+	}
+
+	public void testFuncNames() throws Exception {
+		String code = loadFile("test/org/antlr/jetbrains/adaptor/test/test.sample");
+		String output =
+			"f\n"+
+			"bubbleSort\n"+
+			"z\n"+
+			"q";
+		String xpath = "/script/function/ID";
+		checkXPathResults(code, xpath, output);
+	}
+
+	protected void checkXPathResults(String code, String xpath, String allNodesText) throws IOException {
+		checkXPathResults(SampleLanguage.INSTANCE, code, xpath, allNodesText);
 	}
 
 	protected void checkXPathResults(Language language, String code, String xpath, String allNodesText) throws IOException {
@@ -28,8 +54,9 @@ public class TestXPath extends ParsingTestCase {
 		StringBuilder buf = new StringBuilder();
 		for (PsiElement t : nodes) {
 			buf.append(t.getText());
+			buf.append("\n");
 		}
-		assertEquals(allNodesText, buf.toString());
+		assertEquals(allNodesText.trim(), buf.toString().trim());
 	}
 
 	@Override
